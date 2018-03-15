@@ -20,8 +20,7 @@ module Services
     protected
 
     def subscribe_entry(entry)
-      service = SubscribeEntryService.new(entry).run
-      @errors.merge!(service.errors)
+      SubscribeEntryJob.perform_later(entry)
     end
   end
 end
