@@ -2,12 +2,12 @@ class EntriesController < ApplicationController
 
   # POST /entries.json
   def create
-    @entry = Entry.new(entry_params)
+    service = Services::CreateEntryService.new(entry_params).run
 
-    if @entry.save
-      render json: {success: true}
+    if service.errors.any?
+      render json: {success: false, errors: service.errors}
     else
-      render json: {success: false, errors: @entry.errors}
+      render json: {success: true}
     end
   end
 
