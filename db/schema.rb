@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160125020403) do
+ActiveRecord::Schema.define(version: 20180315115128) do
 
   create_table "competitions", force: :cascade do |t|
     t.string   "name"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20160125020403) do
     t.text     "email"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.datetime "subscribed_at"
   end
 
   add_index "entries", ["competition_id", "email"], name: "index_entries_on_competition_id_and_email", unique: true

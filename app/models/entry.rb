@@ -11,6 +11,14 @@ class Entry < ActiveRecord::Base
   validates_presence_of :name, if: :requires_name
   validates_uniqueness_of :email, scope: :competition, message: "has already entered this competition"
 
+  def subscribed?
+    !!self.subscribed_at
+  end
+
+  def subscribed!
+    self.update_column(:subscribed_at, Time.now)
+  end
+
   private
     def clean_email
       self.email = email.downcase.strip if email.present?
