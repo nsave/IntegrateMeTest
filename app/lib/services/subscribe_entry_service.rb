@@ -16,10 +16,10 @@ class Services::SubscribeEntryService
 
       if subscribe(@entry) || search_existing(@entry)
         @entry.subscribed!
-        Rails.logger.info("Entry subscribed (#{@entry.email})")
+        Rails.logger.info("Mailchimp member subscribed (#{@entry.email})")
       else
         @errors[:internal_error] = nil
-        Rails.logger.error("Failed to subscribe entry (#{@entry.email})")
+        Rails.logger.error("Failed to subscribe mailchimp member (#{@entry.email})")
       end
 
     end

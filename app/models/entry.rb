@@ -11,6 +11,8 @@ class Entry < ActiveRecord::Base
   validates_presence_of :name, if: :requires_name
   validates_uniqueness_of :email, scope: :competition, message: "has already entered this competition"
 
+  scope :not_subscribed, ->() { where(subscribed_at: nil) }
+
   def subscribed?
     !!self.subscribed_at
   end
