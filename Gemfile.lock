@@ -53,6 +53,11 @@ GEM
     concurrent-ruby (1.0.5)
     crass (1.0.3)
     debug_inspector (0.0.2)
+    delayed_job (4.1.4)
+      activesupport (>= 3.0, < 5.2)
+    delayed_job_active_record (4.1.2)
+      activerecord (>= 3.0, < 5.2)
+      delayed_job (>= 3.0, < 5)
     diff-lcs (1.3)
     dotenv (2.2.1)
     dotenv-rails (2.2.1)
@@ -181,6 +186,7 @@ DEPENDENCIES
   angularjs-rails
   byebug
   coffee-rails (~> 4.1.0)
+  delayed_job_active_record (~> 4.1)
   dotenv-rails
   gibbon (~> 3.2)
   jbuilder (~> 2.0)
