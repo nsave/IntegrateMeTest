@@ -1,8 +1,8 @@
 class Services::SubscribeEntryService
   attr_reader :errors
 
-  DEFAULT_FIRST_NAME = 'Dear'
-  DEFAULT_LAST_NAME  = 'Stranger'
+  DEFAULT_FIRST_NAME = 'Stranger'
+  DEFAULT_LAST_NAME  = 'Unknown'
 
   def initialize(entry, subscription_gateway = MailchimpGateway)
     @errors = {}
@@ -36,6 +36,7 @@ class Services::SubscribeEntryService
   def split_full_name(full_name)
     if full_name.presence
       first_name, last_name = full_name.strip.split(/\s+/, 2)
+      last_name ||= DEFAULT_LAST_NAME
     else
       first_name, last_name = DEFAULT_FIRST_NAME, DEFAULT_LAST_NAME
     end
