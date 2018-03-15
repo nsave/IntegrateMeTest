@@ -2,13 +2,18 @@ module Services
   class CreateEntryService
     attr_reader :errors, :entry
 
-    def initialize(entry_params)
+    def initialize(entry_params, repository = Entry)
+      @entry_params = entry_params
+      @repository   = repository
+
       @errors = {}
-      @entry  = Entry.new(entry_params)
+      @entry  = nil
     end
 
     def run
-      if @entry.save
+      @entry = @repository.create(@entry_params)
+
+      if @entry.valid?
         subscribe_entry(@entry)
       else
         @errors.merge!(@entry.errors.as_json)
