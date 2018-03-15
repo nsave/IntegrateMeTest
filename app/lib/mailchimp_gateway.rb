@@ -15,4 +15,22 @@ class MailchimpGateway
     Rails.logger.error("Mailchimp failed to create a member: #{e.message}")
     return false
   end
+
+
+  def self.search_members(email:)
+    response = Gibbon::Request.search_members.retrieve(
+      params: {
+        query:    email,
+        list_id:  DEFAULT_LIST_ID
+      }
+    )
+
+    return response.body.
+      fetch('exact_matches', {}).
+      fetch('members', [])
+
+  rescue Gibbon::MailChimpError => e
+    Rails.logger.error("Mailchimp failed to retreive members: #{e.message}")
+    return []
+  end
 end

@@ -4,10 +4,25 @@ describe Services::SubscribeEntryService do
   let(:subscribed_entry)    { double(:entry, subscribed?: true) }
   let(:unsubscribed_entry)  { double(:entry, subscribed?: false, email: :email, name: 'name') }
 
-  let(:subscription_gateway) { double(:fake_gateway) }
+  let(:subscription_gateway) do
+    gateway = double(:fake_gateway)
+    allow(gateway).to receive(:create_member).and_return(false)
+    allow(gateway).to receive(:search_members).and_return([])
+    gateway
+  end
 
   it 'delegates subscription to a gateway' do
     expect(subscription_gateway).to receive(:create_member).and_return(true)
+    expect(unsubscribed_entry).to   receive(:subscribed!)
+
+    service = described_class.new(unsubscribed_entry, subscription_gateway).run
+
+    expect(service.errors).to be_empty
+  end
+
+  it 'sets entry subscribed if its registered in the gateway' do
+    expect(subscription_gateway).to receive(:create_member).and_return(false)
+    expect(subscription_gateway).to receive(:search_members).with(email: :email).and_return([:member])
     expect(unsubscribed_entry).to   receive(:subscribed!)
 
     service = described_class.new(unsubscribed_entry, subscription_gateway).run

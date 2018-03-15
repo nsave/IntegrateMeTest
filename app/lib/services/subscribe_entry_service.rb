@@ -14,12 +14,12 @@ class Services::SubscribeEntryService
   def run
     unless @entry.subscribed?
 
-      if subscribe(@entry)
+      if subscribe(@entry) || search_existing(@entry)
         @entry.subscribed!
         Rails.logger.info("Entry subscribed (#{@entry.email})")
       else
-        Rails.logger.error("Failed to subscribe entry (#{@entry.email})")
         @errors[:internal_error] = nil
+        Rails.logger.error("Failed to subscribe entry (#{@entry.email})")
       end
 
     end
@@ -31,6 +31,10 @@ class Services::SubscribeEntryService
 
   def subscribe(entry)
     return @subscription_gateway.create_member(entry.email, *split_full_name(entry.name))
+  end
+
+  def search_existing(entry)
+    return @subscription_gateway.search_members(email: entry.email).any?
   end
 
   def split_full_name(full_name)
