@@ -1,0 +1,50 @@
+<h1>Competition App</h1>
+
+<h2>Enter competitions below</h2>
+
+<div ng-controller="CompetitionController as ctrl" ng-init="ctrl.init(<%= competitions_init(@competitions) %>)">
+  <h3>Available competitions: {{ctrl.competitions.length}}</h3>
+
+  <ul>
+    <li ng-repeat="competition in ctrl.competitions">
+      <a href="{{competition.link}}">{{competition.name}}</a>
+    </li>
+  </ul>
+
+  <hr>
+
+  <div ng-if="ctrl.formStep == 0">
+    <a href="#" ng-click="ctrl.openForm()">Create competition</a>
+  </div>
+  <div ng-if="ctrl.formStep != 0">
+
+    <div id="error_explanation" ng-if="ctrl.errors">
+      Sorry, ther was a problem:
+      <ul>
+        <li ng-repeat="(field, errors) in ctrl.errors">
+          {{field}}:
+          <span ng-repeat="error in errors">{{error}}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div ng-if="ctrl.formStep == 1">
+      <form name="competition">
+
+        <p>
+          <label for="name">Name</label>
+          <input id="name" name="name" ng-model="ctrl.newCompetition.name">
+        </p>
+
+        <p>
+          <label for="requiresName">Requires entrant name?</label>
+          <input id="requiresName" name="requiresName" ng-model="ctrl.newCompetition.requiresName" type="checkbox">
+        </p>
+
+        <input type="submit" ng-click="ctrl.submitForm()" value="Create!">
+      </form>
+    </div>
+    <hr>
+    <a href="#" ng-click="ctrl.closeForm()">Cancel</a>
+  </div>
+</div>
