@@ -12,7 +12,11 @@ feature 'Create competition' do
     )
 
     visit root_path
+
     click_on 'Create competition'
+    click_on 'Cancel'
+    click_on 'Create competition'
+
     fill_in 'Your api key', with: 'testkey'
     click_on 'Fetch!'
 

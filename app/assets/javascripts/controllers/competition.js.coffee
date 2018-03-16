@@ -2,7 +2,10 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
   self = @
 
   @init = (competitions) ->
-    self.competitions   = competitions
+    self.competitions = competitions
+    self.toInitialState()
+
+  @toInitialState = ->
     self.newCompetition = {
       name: '',
       requires_entry_name: true,
@@ -16,6 +19,9 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
 
   @openForm = ->
     self.formStep = 1
+
+  @closeForm = ->
+    self.toInitialState()
 
   @fetchLists = ->
     $http.post("/mailchimp_lists", { api_key: self.newCompetition.mailchimp_api_key }).
@@ -31,19 +37,14 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
         alert("ERROR!")
       )
 
-  @closeForm = ->
-    self.formStep = 0
-
   @submitForm = ->
     $http.post("/competitions", self.newCompetition).
       success((data, status, headers, config) ->
         if data.success
           alert("Your competition submited!")
           self.competitions.unshift(data.competition)
-          self.closeForm()
 
-          self.newCompetition = { name: '', mailchimp_api_key: '' }
-          self.errors = null
+          self.toInitialState()
         else
           self.errors = data.errors
       ).
