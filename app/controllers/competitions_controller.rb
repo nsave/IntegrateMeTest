@@ -27,7 +27,9 @@ class CompetitionsController < ApplicationController
 
   private
     def competition_params
-      params.require(:competition).permit(:name, :requires_entry_name)
+      params.require(:competition).permit(
+        :name, :requires_entry_name, :mailchimp_api_key, :mailchimp_list_id
+      )
     end
 
     def competition_entrant_page(competition)
