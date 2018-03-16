@@ -1,6 +1,18 @@
 class MailchimpGateway
   DEFAULT_LIST_ID = ENV['MAILCHIMP_LIST_ID']
 
+  def initialize(api_key)
+    @request = Gibbon::Request.new(api_key: api_key)
+  end
+
+  def get_lists
+    @request.lists.retrieve.body.
+      fetch('lists', [])
+  rescue Gibbon::MailChimpError, Gibbon::GibbonError => e
+    Rails.logger.error("Mailchimp failed to retreive lists: #{e.message}")
+    return []
+  end
+
   def self.create_member(email, first_name, last_name)
     Gibbon::Request.lists(DEFAULT_LIST_ID).members.create(
       body: {
@@ -11,7 +23,7 @@ class MailchimpGateway
     )
 
     return true
-  rescue Gibbon::MailChimpError => e
+  rescue Gibbon::MailChimpError, Gibbon::GibbonError => e
     Rails.logger.error("Mailchimp failed to create a member: #{e.message}")
     return false
   end
@@ -29,7 +41,7 @@ class MailchimpGateway
       fetch('exact_matches', {}).
       fetch('members', [])
 
-  rescue Gibbon::MailChimpError => e
+  rescue Gibbon::MailChimpError, Gibbon::GibbonError => e
     Rails.logger.error("Mailchimp failed to retreive members: #{e.message}")
     return []
   end

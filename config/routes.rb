@@ -1,13 +1,11 @@
 Rails.application.routes.draw do
   resources :entries
-  resources :competitions, only: :create
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  root 'welcome#index'
-  get ':competition_id/:permalink' => 'competitions#entrant_page', constraints: {competition_id: /\d+/}
-  post 'entries' => 'entries#create'
+  root 'competitions#index'
+  resources :competitions, only: :create
+  get ':competition_id/:permalink' => 'competitions#show', constraints: {competition_id: /\d+/}
+  resources :mailchimp_lists, only: :index
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

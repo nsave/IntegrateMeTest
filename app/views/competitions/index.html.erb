@@ -29,7 +29,26 @@
     </div>
 
     <div ng-if="ctrl.formStep == 1">
+      <form>
+        <p>
+          <label for="name">Your api key</label>
+          <input id="name" name="name" ng-model="ctrl.newCompetition.mailchimp_api_key" type="password">
+        </p>
+        <input type="submit" ng-click="ctrl.fetchLists()" value="Fetch!">
+
+      </form>
+    </div>
+
+    <div ng-if="ctrl.formStep == 2">
       <form name="competition">
+
+        <p>
+          <label for="list">List</label>
+          <select ng-model="ctrl.newCompetition.mailchimp_list_id" required="true">
+            <option ng-repeat="list in ctrl.mailchimpLists" value="{{list.id}}">{{list.name}}</option>
+          </select>
+          <a href="#" ng-click="ctrl.openForm()">or change api key</a>
+        </p>
 
         <p>
           <label for="name">Name</label>
