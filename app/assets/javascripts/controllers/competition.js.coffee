@@ -13,7 +13,7 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
     self.formStep = 1
 
   @fetchLists = ->
-    $http.get("/mailchimp_lists?api_key=" + self.newCompetition.mailchimp_api_key).
+    $http.post("/mailchimp_lists", { api_key: self.newCompetition.mailchimp_api_key }).
       success((data, status, headers, config) ->
         if data.lists.length > 0
           self.formStep = 2

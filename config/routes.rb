@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'competitions#index'
   resources :competitions, only: :create
   get ':competition_id/:permalink' => 'competitions#show', constraints: {competition_id: /\d+/}
-  resources :mailchimp_lists, only: :index
+  post '/mailchimp_lists' => 'mailchimp_lists#index'
 
 
   # Example of regular route:
