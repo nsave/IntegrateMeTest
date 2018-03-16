@@ -1,4 +1,4 @@
-angular.module('integrate', []).controller('EntrantController', ($scope, $http) ->
+angular.module('integrate').controller('EntrantController', ($scope, $http) ->
   self = @
 
   @init = (data) ->

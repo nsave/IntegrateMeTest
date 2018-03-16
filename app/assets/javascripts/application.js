@@ -11,4 +11,6 @@
 // about supported directives.
 //
 //= require angular
-//= require_tree .
+//= require app
+//= require_tree ./controllers
+

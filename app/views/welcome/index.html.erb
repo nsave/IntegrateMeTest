@@ -2,13 +2,12 @@
 
 <h2>Enter competitions below</h2>
 
-<% if @competitions.any? %>
-  <ul>
-    <% @competitions.each do |competition| %>
-      <li><%= link_to competition.name, competition_entrant_page(competition) %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Seed your data!</p>
-<% end %>
+<div ng-controller="CompetitionController as ctrl" ng-init="ctrl.init(<%= competitions_init(@competitions) %>)">
+  <h3>Available competitions: {{ctrl.competitions.length}}</h3>
 
+  <ul>
+    <li ng-repeat="competition in ctrl.competitions">
+      <a href="{{competition.link}}">{{competition.name}}</a>
+    </li>
+  </ul>
+</div>
