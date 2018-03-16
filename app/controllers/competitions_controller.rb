@@ -1,6 +1,4 @@
 class CompetitionsController < ApplicationController
-  helper_method :competition_entrant_page, :build_competition_json
-
   def index
     @competitions = Competition.all.order('created_at desc')
   end
@@ -20,7 +18,7 @@ class CompetitionsController < ApplicationController
     else
       render json: {
         success: true,
-        competition: build_competition_json(service.competition)
+        competition: view_context.build_competition_json(service.competition)
       }
     end
   end
@@ -30,16 +28,5 @@ class CompetitionsController < ApplicationController
       params.require(:competition).permit(
         :name, :requires_entry_name, :mailchimp_api_key, :mailchimp_list_id
       )
-    end
-
-    def competition_entrant_page(competition)
-      "/#{competition.id}/#{competition.name.downcase.gsub(/[^a-z0-9 _\-]/i, '').gsub(/[ _-]/, '-')}"
-    end
-
-    def build_competition_json(competition)
-      {
-        name: competition.name,
-        link: competition_entrant_page(competition)
-      }
     end
 end
