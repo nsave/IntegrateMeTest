@@ -7,18 +7,11 @@ module CompetitionsHelper
 
   def competitions_init(competitions)
     competitions.map do |competition|
-      build_competition_json(competition)
+      Competition::JsonSerializer.new(competition)
     end.to_json
   end
 
   def competition_entrant_page(competition)
     "/#{competition.id}/#{competition.name.downcase.gsub(/[^a-z0-9 _\-]/i, '').gsub(/[ _-]/, '-')}"
-  end
-
-  def build_competition_json(competition)
-    {
-      name: competition.name,
-      link: competition_entrant_page(competition)
-    }
   end
 end

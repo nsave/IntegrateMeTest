@@ -18,7 +18,7 @@ class CompetitionsController < ApplicationController
     else
       render json: {
         success: true,
-        competition: view_context.build_competition_json(service.competition)
+        competition: Competition::JsonSerializer.new(service.competition)
       }
     end
   end
