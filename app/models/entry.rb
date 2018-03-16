@@ -13,6 +13,8 @@ class Entry < ActiveRecord::Base
 
   scope :not_subscribed, ->() { where(subscribed_at: nil) }
 
+  delegate :mailchimp_api_key, :mailchimp_list_id, to: :competition
+
   def subscribed?
     !!self.subscribed_at
   end

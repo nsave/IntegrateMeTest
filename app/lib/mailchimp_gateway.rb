@@ -1,6 +1,4 @@
 class MailchimpGateway
-  DEFAULT_LIST_ID = ENV['MAILCHIMP_LIST_ID']
-
   def initialize(api_key)
     @request = Gibbon::Request.new(api_key: api_key)
   end
@@ -13,8 +11,8 @@ class MailchimpGateway
     return []
   end
 
-  def self.create_member(email, first_name, last_name)
-    Gibbon::Request.lists(DEFAULT_LIST_ID).members.create(
+  def create_member(list_id, email, first_name, last_name)
+    @request.lists(list_id).members.create(
       body: {
         email_address: email,
         merge_fields: { FNAME: first_name, LNAME: last_name },
@@ -28,12 +26,11 @@ class MailchimpGateway
     return false
   end
 
-
-  def self.search_members(email:)
-    response = Gibbon::Request.search_members.retrieve(
+  def search_members(list_id, email:)
+    response = @request.search_members.retrieve(
       params: {
         query:    email,
-        list_id:  DEFAULT_LIST_ID
+        list_id:  list_id
       }
     )
 

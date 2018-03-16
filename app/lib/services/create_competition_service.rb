@@ -14,6 +14,7 @@ module Services
       @competition = @repository.create(@competition_params)
 
       if @competition.valid?
+        # TODO: validate mailchimp api_key and list_id here
       else
         @errors.merge!(@competition.errors.as_json)
       end

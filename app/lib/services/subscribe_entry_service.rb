@@ -4,11 +4,11 @@ class Services::SubscribeEntryService
   DEFAULT_FIRST_NAME = 'Stranger'
   DEFAULT_LAST_NAME  = 'Unknown'
 
-  def initialize(entry, subscription_gateway = MailchimpGateway)
+  def initialize(entry, subscription_gateway_factory = MailchimpGateway)
     @errors = {}
     @entry  = entry
 
-    @subscription_gateway = subscription_gateway
+    @subscription_gateway = subscription_gateway_factory.new(@entry.mailchimp_api_key)
   end
 
   def run
@@ -24,17 +24,24 @@ class Services::SubscribeEntryService
 
     end
 
-    return self
+    self
   end
 
   protected
 
   def subscribe(entry)
-    return @subscription_gateway.create_member(entry.email, *split_full_name(entry.name))
+    @subscription_gateway.create_member(
+      @entry.mailchimp_list_id,
+      entry.email,
+      *split_full_name(entry.name)
+    )
   end
 
   def search_existing(entry)
-    return @subscription_gateway.search_members(email: entry.email).any?
+    @subscription_gateway.search_members(
+      @entry.mailchimp_list_id,
+      email: entry.email
+    ).any?
   end
 
   def split_full_name(full_name)

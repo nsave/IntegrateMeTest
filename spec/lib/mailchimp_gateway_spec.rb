@@ -1,13 +1,11 @@
 require "rails_helper"
 
 describe MailchimpGateway do
-  before(:each) do
-    stub_const('MailchimpGateway::DEFAULT_LIST_ID', 'list_id')
-  end
+  subject { described_class.new('api-key') }
 
-  describe '.create_member' do
+  describe '#create_member' do
     it 'returns true for successful request' do
-      stub = stub_request(:post, "https://us12.api.mailchimp.com/3.0/lists/list_id/members").
+      stub = stub_request(:post, "https://key.api.mailchimp.com/3.0/lists/test_id/members").
         with(
           body: {
             email_address: 'some@email.com',
@@ -20,28 +18,28 @@ describe MailchimpGateway do
       ).to_return(status: 200, body: "", headers: {})
 
       expect(
-        described_class.create_member('some@email.com', 'fname', 'lname')
+        subject.create_member(:test_id, 'some@email.com', 'fname', 'lname')
       ).to be_truthy
 
       expect(stub).to have_been_requested
     end
 
     it 'returns false for failed request' do
-      stub = stub_request(:post, "https://us12.api.mailchimp.com/3.0/lists/list_id/members").
+      stub = stub_request(:post, "https://key.api.mailchimp.com/3.0/lists/test_id/members").
         to_return(status: 400, body: "", headers: {})
 
       expect(
-        described_class.create_member('some@email.com', 'fname', 'lname')
+        subject.create_member(:test_id, 'some@email.com', 'fname', 'lname')
       ).to be_falsey
       expect(stub).to have_been_requested
     end
   end
 
-  describe '.search_members' do
+  describe '#search_members' do
     it 'returns members array for successful request' do
       response_members = [{'key' => 'val'}]
 
-      stub = stub_request(:get, "https://us12.api.mailchimp.com/3.0/search-members?list_id=list_id&query=some@email.com").
+      stub = stub_request(:get, "https://key.api.mailchimp.com/3.0/search-members?list_id=test_id&query=some@email.com").
         to_return(
           status: 200,
           body: { exact_matches: { members: response_members } }.to_json,
@@ -49,14 +47,14 @@ describe MailchimpGateway do
         )
 
       expect(
-        described_class.search_members(email: 'some@email.com')
+        subject.search_members(:test_id, email: 'some@email.com')
       ).to eq(response_members)
 
       expect(stub).to have_been_requested
     end
 
     it 'returns empty array for failed request' do
-      stub = stub_request(:get, "https://us12.api.mailchimp.com/3.0/search-members?list_id=list_id&query=some@email.com").
+      stub = stub_request(:get, "https://key.api.mailchimp.com/3.0/search-members?list_id=test_id&query=some@email.com").
         to_return(
           status: 400,
           body: "",
@@ -64,7 +62,7 @@ describe MailchimpGateway do
         )
 
       expect(
-        described_class.search_members(email: 'some@email.com')
+        subject.search_members(:test_id, email: 'some@email.com')
       ).to eq([])
 
       expect(stub).to have_been_requested
