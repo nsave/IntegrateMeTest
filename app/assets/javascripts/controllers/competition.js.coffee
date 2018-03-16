@@ -6,7 +6,7 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
     self.newCompetition = {
       name: '',
       requires_entry_name: true,
-      mailchimp_api_key: '1b0820da8df271abd493a88efc57fc1d-us12'
+      mailchimp_api_key: ''
     }
 
     self.mailchimpLists = []
