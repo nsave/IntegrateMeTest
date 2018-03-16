@@ -3,7 +3,12 @@ angular.module('integrate').controller('CompetitionController', ($scope, $http) 
 
   @init = (competitions) ->
     self.competitions   = competitions
-    self.newCompetition = { name: '', mailchimp_api_key: '1b0820da8df271abd493a88efc57fc1d-us12' }
+    self.newCompetition = {
+      name: '',
+      requires_entry_name: true,
+      mailchimp_api_key: '1b0820da8df271abd493a88efc57fc1d-us12'
+    }
+
     self.mailchimpLists = []
 
     self.formStep = 0
