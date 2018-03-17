@@ -64,6 +64,7 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.3)
+    database_cleaner (1.6.2)
     debug_inspector (0.0.2)
     delayed_job (4.1.4)
       activesupport (>= 3.0, < 5.2)
@@ -211,6 +212,7 @@ DEPENDENCIES
   byebug
   capybara
   coffee-rails (~> 4.1.0)
+  database_cleaner
   delayed_job_active_record (~> 4.1)
   gibbon (~> 3.2)
   jbuilder (~> 2.0)
