@@ -20,13 +20,9 @@ feature 'Create competition' do
     fill_in 'Your api key', with: 'testkey'
     click_on 'Fetch!'
 
-    sleep(1)
-
     select 'test_name', from: 'listsSelect'
     fill_in 'Name', with: 'New competition'
     click_on 'Create!'
-
-    sleep(1)
 
     expect(page).to have_link('New competition')
   end
@@ -41,8 +37,6 @@ feature 'Create competition' do
     fill_in 'Your api key', with: 'testkey'
     click_on 'Fetch!'
 
-    sleep(1)
-
     expect(page).to have_text('Sorry, ther was a problem')
   end
 
@@ -56,13 +50,9 @@ feature 'Create competition' do
     fill_in 'Your api key', with: 'testkey'
     click_on 'Fetch!'
 
-    sleep(1)
-
     select 'test_name', from: 'listsSelect'
     fill_in 'Name', with: '  '
     click_on 'Create!'
-
-    sleep(1)
 
     expect(page).to have_text('Sorry, ther was a problem')
   end
